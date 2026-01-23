@@ -1,0 +1,831 @@
+/* responsive.css - Responsive cho Công cụ tính GPA */
+
+/* ============================================
+   MÀN HÌNH RẤT NHỎ (Điện thoại - 360px - 400px)
+============================================= */
+@media (max-width: 400px) {
+    body {
+        padding: 8px;
+        min-height: 100vh;
+        overflow-x: hidden;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* Giữ màu nền */
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 5px;
+    }
+
+    /* Header - Full màn hình và căn giữa */
+    header {
+        padding: 15px 10px;
+        margin: 0 -5px 15px -5px;
+        width: calc(100% + 10px);
+        text-align: center;
+        background: white; /* Giữ màu nền */
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    header img {
+        width: 50px;
+        margin-bottom: 10px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+        margin: 5px 0;
+        color: #3a0ca3; /* Giữ màu chữ */
+        width: 100%;
+        text-align: center;
+    }
+
+    .subtitle {
+        font-size: 0.85rem;
+        line-height: 1.4;
+        color: #6c757d; /* Giữ màu chữ */
+        max-width: 90%;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    /* Actions Bar */
+    .actions-bar {
+        margin-bottom: 15px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .controls {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        width: 100%;
+    }
+
+    .btn {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+        width: 100%;
+        justify-content: center;
+        border-radius: 6px;
+    }
+
+    .btn-primary {
+        background: #4361ee; /* Giữ màu nút */
+        color: white;
+    }
+
+    .btn-success {
+        background: #4cc9f0; /* Giữ màu nút */
+        color: white;
+    }
+
+    .btn-warning {
+        background: #f8961e; /* Giữ màu nút */
+        color: white;
+    }
+
+    .btn-danger {
+        background: #f72585; /* Giữ màu nút */
+        color: white;
+    }
+
+    .btn-icon {
+        font-size: 1rem;
+        margin-right: 4px;
+    }
+
+    /* Dashboard Layout - Sắp xếp lại thứ tự */
+    .dashboard {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Summary Card - Đặt lên đầu */
+    .summary-card {
+        position: static;
+        padding: 15px;
+        order: 1;
+        margin-bottom: 15px;
+        background: white; /* Giữ màu nền */
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .summary-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: #3a0ca3; /* Giữ màu chữ */
+        padding-bottom: 8px;
+        border-bottom: 2px solid #4cc9f0; /* Giữ màu border */
+    }
+
+    .summary-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #eee; /* Giữ màu border */
+    }
+
+    .summary-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #212529; /* Giữ màu chữ */
+    }
+
+    .summary-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #4361ee; /* Giữ màu chữ */
+    }
+
+    /* Total GPA */
+    .total-gpa {
+        font-size: 1.2rem;
+        padding: 12px;
+        margin: 15px 0 0 0;
+        background: linear-gradient(135deg, #eef2ff 0%, #dce4ff 100%); /* Giữ màu nền */
+        border-radius: 8px;
+        color: #3a0ca3; /* Giữ màu chữ */
+        font-weight: 800;
+        text-align: center;
+    }
+
+    /* Semesters Container - Đặt sau summary */
+    .semesters-container {
+        order: 2;
+        background: white; /* Giữ màu nền */
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        margin-top: 10px;
+    }
+
+    /* Semester Card */
+    .semester-card {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-left: 4px solid #4361ee; /* Giữ màu border */
+        background: white; /* Giữ màu nền */
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .semester-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .semester-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 1.1rem;
+        color: #3a0ca3; /* Giữ màu chữ */
+    }
+
+    .semester-title span {
+        font-size: 1.3rem;
+    }
+
+    .semester-title input {
+        font-size: 1.1rem;
+        width: 100%;
+        padding: 8px 0;
+        border: none;
+        background: transparent;
+        border-bottom: 2px dashed #ccc;
+        color: #3a0ca3; /* Giữ màu chữ */
+        font-weight: 600;
+    }
+
+    .semester-title input:focus {
+        outline: none;
+        border-color: #4361ee; /* Giữ màu border */
+    }
+
+    .semester-actions {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+    }
+
+    .semester-gpa {
+        font-size: 0.95rem;
+        padding: 8px 12px;
+        text-align: center;
+        border-radius: 8px;
+        margin-bottom: 5px;
+        background: #eef2ff; /* Giữ màu nền */
+        color: #4361ee; /* Giữ màu chữ */
+        font-weight: 700;
+    }
+
+    /* Courses Table - Chuyển thành dạng card trên mobile */
+    .courses-table {
+        display: block;
+        width: 100%;
+        overflow-x: visible;
+        margin: 15px 0;
+    }
+
+    .courses-table thead {
+        display: none; /* Ẩn header trên mobile */
+    }
+
+    .courses-table tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .courses-table tr {
+        display: flex;
+        flex-direction: column;
+        background: #f9f9f9;
+        border-radius: 8px;
+        padding: 15px;
+        border: 1px solid #eee;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .courses-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+    }
+
+    .courses-table td:last-child {
+        border-bottom: none;
+        justify-content: center;
+        padding-top: 10px;
+    }
+
+    .courses-table td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #3a0ca3; /* Giữ màu chữ */
+        font-size: 0.85rem;
+        min-width: 100px;
+        margin-right: 10px;
+    }
+
+    /* Course Input trên mobile */
+    .course-input {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+        width: auto;
+        flex-grow: 1;
+        max-width: 100px;
+        border: 1px solid #ddd; /* Giữ màu border */
+        border-radius: 6px;
+        background: white; /* Giữ màu nền */
+        color: #212529; /* Giữ màu chữ */
+    }
+
+    .score-input {
+        max-width: 80px;
+    }
+
+    /* Buttons trong course row */
+    .courses-table .btn-sm {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        width: auto;
+        background: #f72585; /* Giữ màu nút */
+        color: white;
+    }
+
+    /* Final score và grade display */
+    .final-score, .gpa-4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #212529; /* Giữ màu chữ */
+    }
+
+    .grade-letter {
+        font-size: 0.9rem;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .grade-A { color: #155724; background-color: #d4edda; }
+    .grade-B { color: #0c5460; background-color: #d1ecf1; }
+    .grade-C { color: #856404; background-color: #fff3cd; }
+    .grade-D { color: #721c24; background-color: #f8d7da; }
+    .grade-F { color: #721c24; background-color: #f8d7da; }
+
+    .grade-evaluation {
+        font-size: 0.85rem;
+        text-align: right;
+        color: #6c757d; /* Giữ màu chữ */
+    }
+
+    /* Percentage select */
+    select.course-input {
+        font-size: 0.85rem;
+        padding: 8px;
+        background: white; /* Giữ màu nền */
+        color: #212529; /* Giữ màu chữ */
+    }
+
+    /* Grade Scale - Đặt xuống dưới cùng */
+    .grade-scale {
+        padding: 15px;
+        margin-top: 20px;
+        order: 3;
+        background: #f8f9fa; /* Giữ màu nền */
+        border-radius: 8px;
+    }
+
+    .grade-scale h3 {
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+        color: #3a0ca3; /* Giữ màu chữ */
+    }
+
+    .grade-scale table {
+        font-size: 0.85rem;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .grade-scale th {
+        background: #e9ecef; /* Giữ màu nền */
+        color: #212529; /* Giữ màu chữ */
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .grade-scale td {
+        padding: 8px;
+        border: 1px solid #ddd;
+        color: #212529; /* Giữ màu chữ */
+    }
+
+    .gpa-badge {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+        border-radius: 4px;
+        font-weight: 600;
+    }
+
+    .gpa-excellent { color: #155724; }
+    .gpa-good { color: #0c5460; }
+    .gpa-average { color: #856404; }
+    .gpa-below-average { color: #b38807; }
+    .gpa-poor { color: #dd2e3f; }
+
+    /* Delete confirm */
+    .delete-confirm {
+        padding: 12px;
+        font-size: 0.9rem;
+        background: #fff3f3; /* Giữ màu nền */
+        border-left: 4px solid #f72585; /* Giữ màu border */
+        color: #212529; /* Giữ màu chữ */
+    }
+
+    /* Footer */
+    .footer {
+        padding: 15px 10px;
+        font-size: 0.8rem;
+        margin-top: 30px;
+        text-align: center;
+        color: #6c757d; /* Giữ màu chữ */
+        background: white; /* Giữ màu nền */
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: calc(100% + 10px);
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+
+    /* Thêm nút "Thêm môn học" trong semester */
+    .semester-card > div:last-child {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .semester-card > div:last-child .btn {
+        width: auto;
+        min-width: 150px;
+    }
+}
+
+/* ============================================
+   ĐIỆN THOẠI (401px - 576px)
+============================================= */
+@media (min-width: 401px) and (max-width: 576px) {
+    body {
+        padding: 10px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .container {
+        width: 100%;
+        padding: 0;
+    }
+
+    header {
+        padding: 20px 15px;
+        margin: 0 0 20px 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .controls {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .btn {
+        font-size: 0.85rem;
+        padding: 10px 12px;
+    }
+
+    .dashboard {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .summary-card {
+        order: 1;
+        margin-bottom: 20px;
+    }
+
+    .semesters-container {
+        order: 2;
+    }
+
+    .grade-scale {
+        order: 3;
+        margin-top: 20px;
+    }
+
+    .courses-table td:before {
+        min-width: 120px;
+    }
+
+    .course-input {
+        max-width: 150px;
+    }
+
+    .score-input {
+        max-width: 100px;
+    }
+}
+
+/* ============================================
+   MÁY TÍNH BẢNG (577px - 768px)
+============================================= */
+@media (min-width: 577px) and (max-width: 768px) {
+    body {
+        padding: 15px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .container {
+        max-width: 100%;
+    }
+
+    header {
+        padding: 25px 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-top: 10px;
+    }
+
+    .actions-bar {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .btn {
+        width: auto;
+    }
+
+    /* Sắp xếp lại layout cho tablet */
+    .dashboard {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "summary"
+            "semesters"
+            "gradescale";
+        gap: 20px;
+    }
+
+    .summary-card {
+        grid-area: summary;
+    }
+
+    .semesters-container {
+        grid-area: semesters;
+    }
+
+    .grade-scale {
+        grid-area: gradescale;
+        margin-top: 0;
+    }
+
+    /* Giữ nguyên table layout nhưng thêm scroll ngang nếu cần */
+    .courses-table {
+        display: table;
+        overflow-x: auto;
+        font-size: 0.9rem;
+    }
+
+    .courses-table thead {
+        display: table-header-group;
+    }
+
+    .courses-table tbody {
+        display: table-row-group;
+    }
+
+    .courses-table tr {
+        display: table-row;
+    }
+
+    .courses-table td {
+        display: table-cell;
+        padding: 10px;
+    }
+
+    .courses-table td:before {
+        display: none;
+    }
+
+    /* Điều chỉnh kích thước cột */
+    .courses-table th:nth-child(1),
+    .courses-table td:nth-child(1) {
+        width: 20%;
+    }
+
+    .courses-table th:nth-child(5),
+    .courses-table td:nth-child(5) {
+        width: 15%;
+    }
+
+    .courses-table th:nth-child(9),
+    .courses-table td:nth-child(9) {
+        width: 10%;
+    }
+}
+
+/* ============================================
+   MÁY TÍNH BẢNG NGANG (769px - 992px)
+============================================= */
+@media (min-width: 769px) and (max-width: 992px) {
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "summary"
+            "semesters"
+            "gradescale";
+    }
+
+    .summary-card {
+        grid-area: summary;
+    }
+
+    .semesters-container {
+        grid-area: semesters;
+    }
+
+    .grade-scale {
+        grid-area: gradescale;
+    }
+
+    .courses-table {
+        font-size: 0.9rem;
+    }
+
+    .course-input {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .semester-title input {
+        font-size: 1.3rem;
+    }
+}
+
+/* ============================================
+   DESKTOP NHỎ (993px - 1200px)
+============================================= */
+@media (min-width: 993px) and (max-width: 1200px) {
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr 350px;
+        grid-template-areas: 
+            "semesters summary"
+            "semesters gradescale";
+        gap: 20px;
+    }
+
+    .summary-card {
+        grid-area: summary;
+    }
+
+    .semesters-container {
+        grid-area: semesters;
+    }
+
+    .grade-scale {
+        grid-area: gradescale;
+    }
+
+    .courses-table {
+        font-size: 0.92rem;
+    }
+}
+
+/* ============================================
+   DESKTOP LỚN (1201px+)
+============================================= */
+@media (min-width: 1201px) {
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    .container {
+        max-width: 1600px;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr 400px;
+        grid-template-areas: 
+            "semesters summary"
+            "semesters gradescale";
+    }
+}
+
+/* ============================================
+   TƯƠNG THÍCH JAVASCRIPT CHO RESPONSIVE
+============================================= */
+/* Thêm data-label cho các ô trong table trên mobile */
+@media (max-width: 576px) {
+    .courses-table td:nth-child(1):before { content: "Tên môn học"; }
+    .courses-table td:nth-child(2):before { content: "TC"; }
+    .courses-table td:nth-child(3):before { content: "QT"; }
+    .courses-table td:nth-child(4):before { content: "CK"; }
+    .courses-table td:nth-child(5):before { content: "Tỷ lệ"; }
+    .courses-table td:nth-child(6):before { content: "Điểm số"; }
+    .courses-table td:nth-child(7):before { content: "Điểm chữ"; }
+    .courses-table td:nth-child(8):before { content: "GPA"; }
+    .courses-table td:nth-child(9):before { content: "Đánh giá"; }
+    .courses-table td:nth-child(10):before { content: "Thao tác"; }
+}
+
+/* ============================================
+   CẢI THIỆN KHẢ NĂNG TƯƠNG TÁC TRÊN MOBILE
+============================================= */
+@media (max-width: 576px) {
+    /* Đảm bảo các input có kích thước touch-friendly */
+    input, select, button {
+        min-height: 44px; /* Kích thước tối thiểu cho touch */
+    }
+
+    /* Tăng khoảng cách giữa các phần tử tương tác */
+    .btn {
+        margin-bottom: 5px;
+    }
+
+    /* Đảm bảo text không bị quá nhỏ */
+    .course-input, select.course-input {
+        font-size: 16px; /* Ngăn chặn zoom trên iOS */
+    }
+
+    /* Hiệu ứng nhấn cho mobile */
+    .btn:active {
+        transform: scale(0.98);
+        transition: transform 0.1s;
+    }
+
+    /* Header căn giữa hoàn toàn */
+    header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    header img {
+        display: block;
+        margin: 0 auto 10px auto;
+    }
+
+    h1, .subtitle {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+/* ============================================
+   FIX LỖI HIỂN THỊ HEADER TRÊN MOBILE
+============================================= */
+@media (max-width: 576px) {
+    header {
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        border-radius: 0;
+        padding: 15px 10px;
+    }
+
+    .container {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    /* Đảm bảo các phần khác không bị ảnh hưởng */
+    .semesters-container,
+    .summary-card,
+    .grade-scale,
+    .footer {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* ============================================
+   HỖ TRỢ XOAY NGANG ĐIỆN THOẠI
+============================================= */
+@media (max-height: 500px) and (orientation: landscape) {
+    .dashboard {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "summary"
+            "semesters"
+            "gradescale";
+    }
+
+    .summary-card {
+        display: block;
+        order: 1;
+    }
+
+    .semester-card {
+        margin-bottom: 15px;
+        padding: 15px;
+    }
+
+    .courses-table {
+        font-size: 0.85rem;
+    }
+
+    .course-input {
+        padding: 6px 8px;
+        font-size: 0.85rem;
+    }
+}

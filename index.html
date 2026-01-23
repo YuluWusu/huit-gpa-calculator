@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công cụ tính GPA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="Logo HUIT-01.ico">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+                <img src="140.png" alt="logo" style="width: 60px;">
+                <h1> Công cụ tính GPA</h1>
+            <p class="subtitle">Theo dõi điểm trung bình học kỳ và tổng thể.</p>
+        </header>
+        
+        <div class="actions-bar">
+            <div class="controls">
+                <button class="btn btn-primary" onclick="addSemester()">
+                    <span class="btn-icon">+</span> Thêm học kỳ
+                </button>
+                <button class="btn btn-success" onclick="addSampleData()">
+                    <span class="btn-icon">📊</span> Dữ Liệu Mẫu
+                </button>
+                <button class="btn btn-warning" onclick="exportData()">
+                    <span class="btn-icon">📥</span> Xuất dữ liệu
+                </button>
+                <button class="btn btn-danger" onclick="clearAllData()">
+                    <span class="btn-icon">🗑️</span> Xóa tất cả
+                </button>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <div class="semesters-container" id="semesters-container">
+                <!-- Các học kỳ sẽ được hiển thị ở đây -->
+            </div>
+            
+            <div class="summary-card">
+                <h2 class="summary-title">Tổng quan</h2>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Tổng số học kỳ:</span>
+                    <span class="summary-value" id="total-semesters">0</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Tổng số môn học:</span>
+                    <span class="summary-value" id="total-courses">0</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Tổng số tín chỉ:</span>
+                    <span class="summary-value" id="total-credits">0</span>
+                </div>
+                
+                <div class="total-gpa">
+                    GPA Tổng thể: <span id="overall-gpa">0.00</span>
+                </div>
+                <div class="total-gpa">
+                    Điểm Tổng thể: <span id="overall-score">0.00</span>
+                </div>
+                <div class="grade-scale">
+                    <h3>Thang điểm GPA</h3>
+                    <table>
+                        <tr>
+                            <th>Điểm GPA</th>
+                            <th>Xếp Loại</th>
+                        </tr>
+                        <tr>
+                            <td>3.60 - 4.00</td>
+                            <td><span class="gpa-badge gpa-excellent">Xuất sắc</span></td>
+                        </tr>
+                        <tr>
+                            <td>3.20 - 3.59</td>
+                            <td><span class="gpa-badge gpa-good">Giỏi</span></td>
+                        </tr>
+                        <tr>
+                            <td>2.50 - 3.19</td>
+                            <td><span class="gpa-badge gpa-average">Khá</span></td>
+                        </tr>
+                        <tr>
+                            <td>2.00 - 2.49</td>
+                            <td><span class="gpa-badge gpa-below-average">Trung bình</span></td>
+                        </tr>
+                        <tr>
+                            <td>Dưới 2.00</td>
+                            <td><span class="gpa-badge gpa-poor">Yếu</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Công cụ tính GPA &copy; 2026 - Hoàng Xuân Phi Long lớp 15DHTH01</p>
+        </div>
+    </div>
+    <script src="script.js"></script></body>
+</html>
