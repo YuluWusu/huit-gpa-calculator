@@ -41,21 +41,6 @@
 - **Xác nhận trước khi xóa** tránh nhầm lẫn
 - **Phím tắt thông minh** cho nhập điểm
 
-## 🚀 Bắt Đầu Nhanh
-
-### Cách 1: Sử dụng trực tuyến
-Truy cập: [https://YuluWusu.github.io/gpa-calculator](https://YuluWusu.github.io/gpa-calculator)
-
-### Cách 2: Chạy cục bộ
-```bash
-# 1. Clone repository
-git clone https://github.com/YuluWusu/huit-gpa-calculator.git
-
-# 2. Mở thư mục
-cd huit-gpa-calculator
-
-# 3. Mở file index.html bằng trình duyệt
-# Hoặc dùng Live Server nếu có VSCode
 
 📖 Hướng Dẫn Sử Dụng
 1. Thêm Học Kỳ
@@ -162,3 +147,21 @@ Commit thay đổi (git commit -m 'Add some AmazingFeature')
 Push lên branch (git push origin feature/AmazingFeature)
 
 Mở Pull Request
+
+
+
+## 🚀 Bắt Đầu Nhanh
+
+### Cách 1: Sử dụng trực tuyến
+Truy cập: [https://YuluWusu.github.io/gpa-calculator](https://YuluWusu.github.io/gpa-calculator)
+
+### Cách 2: Chạy cục bộ
+```bash
+# 1. Clone repository
+git clone https://github.com/YuluWusu/huit-gpa-calculator.git
+
+# 2. Mở thư mục
+cd huit-gpa-calculator
+
+# 3. Mở file index.html bằng trình duyệt
+# Hoặc dùng Live Server nếu có VSCode
