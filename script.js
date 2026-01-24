@@ -11,37 +11,29 @@ const percentageOptions = [
 
 // HÀM: Xử lý input điểm số với format x,y
 function handleScoreInput(inputElement, semIdx, courseIdx, field) {
-    // Chỉ lấy số và dấu phẩy
     let value = inputElement.value.replace(/[^0-9,]/g, '');
-    
-    // Xử lý logic nhập
     let commaIndex = value.indexOf(',');
     
-    // Nếu có dấu phẩy
     if (commaIndex !== -1) {
         let beforeComma = value.substring(0, commaIndex);
         let afterComma = value.substring(commaIndex + 1);
         
-        // Phần nguyên: 0-10
         if (beforeComma.length > 0) {
             let intPart = parseInt(beforeComma);
             if (intPart > 10) beforeComma = '10';
             if (intPart < 0) beforeComma = '0';
         }
         
-        // Phần thập phân: chỉ 1 chữ số 0-9
         if (afterComma.length > 1) {
             afterComma = afterComma.substring(0, 1);
         }
         
-        // Nếu phần thập phân không phải số 0-9, bỏ qua
         if (afterComma && (parseInt(afterComma) < 0 || parseInt(afterComma) > 9)) {
             afterComma = '';
         }
         
         value = beforeComma + ',' + afterComma;
     } else {
-        // Chưa có dấu phẩy, phần nguyên: 0-10
         if (value.length > 0) {
             let intValue = parseInt(value);
             if (intValue > 10) value = '10';
@@ -49,18 +41,12 @@ function handleScoreInput(inputElement, semIdx, courseIdx, field) {
         }
     }
     
-    // Cập nhật giá trị hiển thị
     inputElement.value = value;
-    
-    // Chuyển đổi thành số thực
     let numericValue = value.replace(',', '.');
     let floatValue = parseFloat(numericValue);
     if (isNaN(floatValue)) floatValue = 0;
-    
-    // Giới hạn 0-10
     floatValue = Math.min(Math.max(floatValue, 0), 10);
     
-    // Cập nhật data
     updateValue(semIdx, courseIdx, field, floatValue);
 }
 
@@ -69,25 +55,20 @@ function handleScoreKeydown(event, inputElement, semIdx, courseIdx, field) {
     const value = inputElement.value;
     const commaIndex = value.indexOf(',');
     
-    // Cho phép các phím điều hướng và xóa
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || 
         event.key === 'ArrowUp' || event.key === 'ArrowDown' ||
         event.key === 'Tab' || event.key === 'Delete') {
         return;
     }
     
-    // Nếu nhấn dấu phẩy hoặc dấu chấm
     if (event.key === ',' || event.key === '.') {
         event.preventDefault();
         if (commaIndex === -1) {
-            // Thêm dấu phẩy vào cuối
             const cursorPos = inputElement.selectionStart;
             const newValue = value.substring(0, cursorPos) + ',' + value.substring(cursorPos);
             inputElement.value = newValue;
-            // Focus sau dấu phẩy
             inputElement.setSelectionRange(cursorPos + 1, cursorPos + 1);
             
-            // Cập nhật data
             let numericValue = newValue.replace(',', '.');
             let floatValue = parseFloat(numericValue);
             if (isNaN(floatValue)) floatValue = 0;
@@ -96,16 +77,13 @@ function handleScoreKeydown(event, inputElement, semIdx, courseIdx, field) {
         return;
     }
     
-    // Nếu nhấn Backspace
     if (event.key === 'Backspace') {
-        // Xử lý xóa bình thường
         setTimeout(() => {
             handleScoreInput(inputElement, semIdx, courseIdx, field);
         }, 0);
         return;
     }
     
-    // Nếu nhấn phím số
     if (event.key >= '0' && event.key <= '9') {
         event.preventDefault();
         
@@ -113,22 +91,18 @@ function handleScoreKeydown(event, inputElement, semIdx, courseIdx, field) {
         let newValue = value;
         
         if (commaIndex === -1) {
-            // Chưa có dấu phẩy
             if (cursorPos === value.length) {
                 newValue = value + event.key;
             } else {
                 newValue = value.substring(0, cursorPos) + event.key + value.substring(cursorPos);
             }
             
-            // Kiểm tra phần nguyên không vượt quá 10
             const beforeComma = newValue;
             if (beforeComma.length > 0 && parseInt(beforeComma) > 10) {
                 newValue = '10';
             }
         } else {
-            // Đã có dấu phẩy
             if (cursorPos <= commaIndex) {
-                // Thay đổi phần nguyên
                 let beforeComma = value.substring(0, commaIndex);
                 let afterComma = value.substring(commaIndex + 1);
                 
@@ -138,14 +112,12 @@ function handleScoreKeydown(event, inputElement, semIdx, courseIdx, field) {
                     beforeComma = beforeComma.substring(0, cursorPos) + event.key + beforeComma.substring(cursorPos);
                 }
                 
-                // Kiểm tra phần nguyên
                 if (beforeComma.length > 0 && parseInt(beforeComma) > 10) {
                     beforeComma = '10';
                 }
                 
                 newValue = beforeComma + ',' + afterComma;
             } else {
-                // Thay đổi phần thập phân
                 let beforeComma = value.substring(0, commaIndex);
                 let afterComma = value.substring(commaIndex + 1);
                 
@@ -156,7 +128,6 @@ function handleScoreKeydown(event, inputElement, semIdx, courseIdx, field) {
                     afterComma = afterComma.substring(0, decimalPos) + event.key + afterComma.substring(decimalPos);
                 }
                 
-                // Giới hạn phần thập phân 1 chữ số
                 if (afterComma.length > 1) {
                     afterComma = afterComma.substring(0, 1);
                 }
@@ -167,14 +138,12 @@ function handleScoreKeydown(event, inputElement, semIdx, courseIdx, field) {
         
         inputElement.value = newValue;
         
-        // Di chuyển cursor
         if (cursorPos < newValue.length) {
             inputElement.setSelectionRange(cursorPos + 1, cursorPos + 1);
         } else {
             inputElement.setSelectionRange(newValue.length, newValue.length);
         }
         
-        // Cập nhật data
         let numericValue = newValue.replace(',', '.');
         let floatValue = parseFloat(numericValue);
         if (isNaN(floatValue)) floatValue = 0;
@@ -182,7 +151,7 @@ function handleScoreKeydown(event, inputElement, semIdx, courseIdx, field) {
     }
 }
 
-// HÀM: Format điểm số thành chuỗi x,y (1 chữ số thập phân)
+// HÀM: Format điểm số thành chuỗi x,y
 function formatScoreWithComma(score) {
     if (typeof score !== 'number' || isNaN(score)) return '0,0';
     const rounded = Math.round(score * 10) / 10;
@@ -195,7 +164,7 @@ function formatGPAWithTwoDecimals(num) {
     return num.toFixed(2).replace('.', ',');
 }
 
-// HÀM: Validate tín chỉ - CHỈ SỐ NGUYÊN, không âm
+// HÀM: Validate tín chỉ
 function validateCredit(credit) {
     let num = parseFloat(credit);
     if (isNaN(num)) return 0;
@@ -203,14 +172,14 @@ function validateCredit(credit) {
     return num;
 }
 
-// HÀM: Validate điểm số - 0-10, không âm
+// HÀM: Validate điểm số
 function validateScore(score) {
     let num = parseFloat(score);
     if (isNaN(num)) return 0;
     return Math.min(Math.max(num, 0), 10);
 }
 
-// Hàm lấy điểm chữ và GPA từ điểm số (thang điểm Việt Nam)
+// Hàm lấy điểm chữ và GPA
 function getGradeInfo(score) {
     if (score >= 8.5) return { letter: 'A', gpa4: 4.0, gpa3: 4.0 };
     if (score >= 8.0) return { letter: 'B+', gpa4: 3.5, gpa3: 3.5 };
@@ -222,7 +191,7 @@ function getGradeInfo(score) {
     return { letter: 'F', gpa4: 0.0, gpa3: 0.0 };
 }
 
-// Hàm lấy đánh giá học lực từ điểm số
+// Hàm lấy đánh giá học lực
 function getAcademicEvaluation(score) {
     if (score >= 8.5) return "Xuất sắc";
     if (score >= 8.0) return "Giỏi";
@@ -253,17 +222,31 @@ function getGradeColorClass(letter) {
 function formatNumber(num, isCredit = false) {
     if (typeof num !== 'number' || isNaN(num)) return '0';
     if (isCredit) {
-        // Tín chỉ: hiển thị số nguyên
         return Math.round(num).toString();
     }
-    // Điểm số: hiển thị 1 chữ số thập phân
     return num.toFixed(1).replace('.', ',');
 }
 
 // Hàm lưu dữ liệu vào LocalStorage
 function saveData() {
-    localStorage.setItem('gpa_data', JSON.stringify(data));
-    updateSummary();
+    try {
+        // Tính lại điểm cuối kỳ cho tất cả môn học trước khi lưu
+        data.forEach(sem => {
+            if (sem.courses) {
+                sem.courses.forEach(course => {
+                    course.finalScore = calculateFinalScore(course);
+                });
+            }
+        });
+        
+        localStorage.setItem('gpa_data', JSON.stringify(data));
+        
+        // Cập nhật UI ngay lập tức
+        updateAllInfo();
+        
+    } catch (e) {
+        console.error("Error saving data:", e);
+    }
 }
 
 // Hàm tính điểm tổng kết môn học
@@ -282,122 +265,13 @@ function findPercentageOption(qt, ck) {
             return i;
         }
     }
-    return 1;
+    return 1; // Mặc định 30-70
 }
 
-// Hàm cập nhật hiển thị môn học
-function updateCourseDisplay(semIdx, courseIdx) {
-    const course = data[semIdx].courses[courseIdx];
-    
-    // Tính điểm tổng kết
-    const finalScore = calculateFinalScore(course);
-    const validatedFinal = validateScore(finalScore);
-    
-    // Cập nhật điểm trong data
-    course.finalScore = validatedFinal;
-    
-    // Cập nhật điểm tổng kết
-    const finalScoreSpan = document.querySelector(`.final-score[data-sem-idx="${semIdx}"][data-course-idx="${courseIdx}"]`);
-    const gradeLetterSpan = document.querySelector(`.grade-letter[data-sem-idx="${semIdx}"][data-course-idx="${courseIdx}"]`);
-    const gpa4Span = document.querySelector(`.gpa-4[data-sem-idx="${semIdx}"][data-course-idx="${courseIdx}"]`);
-    const gradeEvaluationSpan = document.querySelector(`.grade-evaluation[data-sem-idx="${semIdx}"][data-course-idx="${courseIdx}"]`);
-    
-    if (finalScoreSpan) {
-        finalScoreSpan.textContent = formatScoreWithComma(validatedFinal);
-    }
-    
-    if (gradeLetterSpan) {
-        const gradeInfo = getGradeInfo(validatedFinal);
-        gradeLetterSpan.textContent = gradeInfo.letter;
-        gradeLetterSpan.className = `grade-letter ${getGradeColorClass(gradeInfo.letter)}`;
-        gradeLetterSpan.title = `GPA 4.0: ${gradeInfo.gpa4}\nGPA 3.0: ${gradeInfo.gpa3}`;
-    }
-    
-    if (gpa4Span) {
-        const gradeInfo = getGradeInfo(validatedFinal);
-        gpa4Span.textContent = formatGPAWithTwoDecimals(gradeInfo.gpa4);
-    }
-    
-    if (gradeEvaluationSpan) {
-        gradeEvaluationSpan.textContent = getAcademicEvaluation(validatedFinal);
-    }
-}
-
-// Hàm cập nhật hiển thị học kỳ
-function updateSemesterDisplay(semIdx) {
-    const semesterGPA = calculateGPA(data[semIdx].courses);
-    const semesterAverage = calculateAverage(data[semIdx].courses);
-    const semesterGPASpan = document.querySelector(`.semester-gpa[data-sem-idx="${semIdx}"]`);
-    
-    if (semesterGPASpan) {
-        semesterGPASpan.textContent = `GPA: ${semesterGPA} | ĐTB: ${semesterAverage}`;
-        
-        // Cập nhật class cho GPA
-        semesterGPASpan.className = 'semester-gpa';
-        if (semesterGPA >= 3.6) {
-            semesterGPASpan.classList.add('gpa-excellent');
-        } else if (semesterGPA >= 3.2) {
-            semesterGPASpan.classList.add('gpa-good');
-        } else if (semesterGPA >= 2.5) {
-            semesterGPASpan.classList.add('gpa-average');
-        } else if (semesterGPA >= 2.0) {
-            semesterGPASpan.classList.add('gpa-below-average');
-        } else {
-            semesterGPASpan.classList.add('gpa-poor');
-        }
-    }
-}
-
-// Hàm tính ĐIỂM TRUNG BÌNH của một học kỳ (thang 10)
-function calculateAverage(courses) {
-    if (courses.length === 0) return 0;
-    
-    let totalWeightedScore = 0;
-    let totalCredits = 0;
-    
-    courses.forEach(c => {
-        if (c.finalScore === undefined || isNaN(c.finalScore)) {
-            c.finalScore = calculateFinalScore(c);
-        }
-        
-        const validatedFinal = validateScore(c.finalScore);
-        const credit = validateCredit(c.credit);
-        
-        totalWeightedScore += validatedFinal * credit;
-        totalCredits += credit;
-    });
-    
-    return totalCredits > 0 ? formatScoreWithComma(totalWeightedScore / totalCredits) : 0;
-}
-
-// Hàm thêm học kỳ mới
-function addSemester() {
-    const semNumber = data.length + 1;
-    data.push({ 
-        id: Date.now(),
-        name: `Học kỳ ${semNumber}`, 
-        courses: [] 
-    });
-    saveData();
-    render();
-}
-
-// Hàm thêm môn học vào học kỳ
-function addCourse(semIdx) {
-    data[semIdx].courses.push({ 
-        name: 'Môn học mới', 
-        credit: 3, 
-        qt: 0, 
-        w_qt: 30, 
-        ck: 0, 
-        w_ck: 70,
-        finalScore: 0
-    });
-    saveData();
-    render();
-}
-
+// Hàm cập nhật giá trị
 function updateValue(semIdx, courseIdx, field, value) {
+    if (!data[semIdx] || !data[semIdx].courses[courseIdx]) return;
+    
     const c = data[semIdx].courses[courseIdx];
 
     if (field === 'name') {
@@ -418,40 +292,80 @@ function updateValue(semIdx, courseIdx, field, value) {
         c.w_ck = 100 - qt;
     }
 
-    // Tính lại điểm tổng kết
     c.finalScore = calculateFinalScore(c);
-
     saveData();
     
-    // Chỉ cập nhật hiển thị của môn học và học kỳ hiện tại
+    // CẬP NHẬT TẤT CẢ
     updateCourseDisplay(semIdx, courseIdx);
     updateSemesterDisplay(semIdx);
-    updateSummary();
-    updateOverallInfo();
+    updateOverallInfo(); // THÊM DÒNG NÀY!
+    updateSummary();     // CẬP NHẬT SUMMARY NỮA
 }
 
-// Hàm cập nhật tỷ lệ phần trăm
-function updatePercentage(semIdx, courseIdx, selectElement) {
+// Hàm cập nhật hiển thị môn học
+function updateCourseDisplay(semIdx, courseIdx) {
+    if (!data[semIdx] || !data[semIdx].courses[courseIdx]) return;
+    
     const course = data[semIdx].courses[courseIdx];
-    const selectedOption = percentageOptions[selectElement.selectedIndex];
+    const finalScore = calculateFinalScore(course);
+    const validatedFinal = validateScore(finalScore);
+    course.finalScore = validatedFinal;
     
-    course.w_qt = selectedOption.qt;
-    course.w_ck = selectedOption.ck;
+    const finalScoreSpan = document.querySelector(`.final-score[data-sem-idx="${semIdx}"][data-course-idx="${courseIdx}"]`);
+    const gradeLetterSpan = document.querySelector(`.grade-letter[data-sem-idx="${semIdx}"][data-course-idx="${courseIdx}"]`);
+    const gpa4Span = document.querySelector(`.gpa-4[data-sem-idx="${semIdx}"][data-course-idx="${courseIdx}"]`);
+    const gradeEvaluationSpan = document.querySelector(`.grade-evaluation[data-sem-idx="${semIdx}"][data-course-idx="${courseIdx}"]`);
     
-    saveData();
-    updateCourseDisplay(semIdx, courseIdx);
-    updateSemesterDisplay(semIdx);
+    if (finalScoreSpan) finalScoreSpan.textContent = formatScoreWithComma(validatedFinal);
+    
+    if (gradeLetterSpan) {
+        const gradeInfo = getGradeInfo(validatedFinal);
+        gradeLetterSpan.textContent = gradeInfo.letter;
+        gradeLetterSpan.className = `grade-letter ${getGradeColorClass(gradeInfo.letter)}`;
+        gradeLetterSpan.title = `GPA 4.0: ${gradeInfo.gpa4}\nGPA 3.0: ${gradeInfo.gpa3}`;
+    }
+    
+    if (gpa4Span) {
+        const gradeInfo = getGradeInfo(validatedFinal);
+        gpa4Span.textContent = formatGPAWithTwoDecimals(gradeInfo.gpa4);
+    }
+    
+    if (gradeEvaluationSpan) {
+        gradeEvaluationSpan.textContent = getAcademicEvaluation(validatedFinal);
+    }
 }
 
-// Hàm cập nhật tên học kỳ
-function updateSemesterName(semIdx, value) {
-    data[semIdx].name = value;
-    saveData();
+// Hàm cập nhật hiển thị học kỳ
+function updateSemesterDisplay(semIdx) {
+    if (!data[semIdx]) return;
+    
+    const semesterGPA = calculateGPA(data[semIdx].courses);
+    const semesterAverage = calculateAverage(data[semIdx].courses);
+    const semesterGPASpan = document.querySelector(`.semester-gpa[data-sem-idx="${semIdx}"]`);
+    
+    if (semesterGPASpan) {
+        semesterGPASpan.textContent = `GPA: ${semesterGPA} | ĐTB: ${semesterAverage}`;
+        
+        semesterGPASpan.className = 'semester-gpa';
+        const numericGPA = parseFloat(semesterGPA.replace(',', '.'));
+        
+        if (numericGPA >= 3.6) {
+            semesterGPASpan.classList.add('gpa-excellent');
+        } else if (numericGPA >= 3.2) {
+            semesterGPASpan.classList.add('gpa-good');
+        } else if (numericGPA >= 2.5) {
+            semesterGPASpan.classList.add('gpa-average');
+        } else if (numericGPA >= 2.0) {
+            semesterGPASpan.classList.add('gpa-below-average');
+        } else {
+            semesterGPASpan.classList.add('gpa-poor');
+        }
+    }
 }
 
-// Hàm tính GPA của một học kỳ (theo thang 4.0) - SỬA LẠI HIỂN THỊ 2 CHỮ SỐ
+// Hàm tính GPA của một học kỳ
 function calculateGPA(courses) {
-    if (courses.length === 0) return 0;
+    if (!courses || courses.length === 0) return '0,00';
     
     let totalWeightedPoints = 0;
     let totalCredits = 0;
@@ -464,8 +378,8 @@ function calculateGPA(courses) {
         const validatedFinal = validateScore(c.finalScore);
         const gradeInfo = getGradeInfo(validatedFinal);
         const gradePoint = gradeInfo.gpa4;
-        
         const credit = validateCredit(c.credit);
+        
         totalWeightedPoints += gradePoint * credit;
         totalCredits += credit;
     });
@@ -474,9 +388,31 @@ function calculateGPA(courses) {
     return formatGPAWithTwoDecimals(gpa);
 }
 
-// Hàm tính ĐIỂM TRUNG BÌNH tổng thể (thang 10)
+// Hàm tính ĐIỂM TRUNG BÌNH của một học kỳ
+function calculateAverage(courses) {
+    if (!courses || courses.length === 0) return '0,0';
+    
+    let totalWeightedScore = 0;
+    let totalCredits = 0;
+    
+    courses.forEach(c => {
+        if (c.finalScore === undefined || isNaN(c.finalScore)) {
+            c.finalScore = calculateFinalScore(c);
+        }
+        
+        const validatedFinal = validateScore(c.finalScore);
+        const credit = validateCredit(c.credit);
+        
+        totalWeightedScore += validatedFinal * credit;
+        totalCredits += credit;
+    });
+    
+    return totalCredits > 0 ? formatScoreWithComma(totalWeightedScore / totalCredits) : '0,0';
+}
+
+// Hàm tính ĐIỂM TRUNG BÌNH tổng thể
 function calculateOverallScore() {
-    if (data.length === 0) return 0;
+    if (data.length === 0) return '0,0';
     
     let totalWeightedScore = 0;
     let totalCredits = 0;
@@ -499,8 +435,10 @@ function calculateOverallScore() {
     return formatScoreWithComma(score);
 }
 
-// Hàm tính GPA tổng thể - SỬA LẠI HIỂN THỊ 2 CHỮ SỐ
+// Hàm tính GPA tổng thể
 function calculateOverallGPA() {
+    if (data.length === 0) return '0,00';
+    
     let totalWeightedPoints = 0;
     let totalCredits = 0;
     
@@ -524,6 +462,80 @@ function calculateOverallGPA() {
     return formatGPAWithTwoDecimals(gpa);
 }
 
+// HÀM THÊM HỌC KỲ MỚI
+function addSemester() {
+    const semNumber = data.length + 1;
+    data.push({ 
+        id: Date.now(),
+        name: `Học kỳ ${semNumber}`, 
+        courses: [] 
+    });
+    saveData();
+    render();
+}
+
+// HÀM THÊM MÔN HỌC VÀO HỌC KỲ
+function addCourse(semIdx) {
+    if (!data[semIdx]) return;
+    
+    if (!data[semIdx].courses) {
+        data[semIdx].courses = [];
+    }
+    
+    data[semIdx].courses.push({ 
+        name: 'Môn học mới', 
+        credit: 3, 
+        qt: 0, 
+        w_qt: 30, 
+        ck: 0, 
+        w_ck: 70,
+        finalScore: 0
+    });
+    
+    saveData();
+    render();
+}
+// Hàm cập nhật tất cả thông tin
+function updateAllInfo() {
+    // Cập nhật từng môn học
+    data.forEach((sem, semIdx) => {
+        sem.courses.forEach((course, courseIdx) => {
+            course.finalScore = calculateFinalScore(course);
+            updateCourseDisplay(semIdx, courseIdx);
+        });
+        updateSemesterDisplay(semIdx);
+    });
+    
+    // Cập nhật tổng thể
+    updateOverallInfo();
+    updateSummary();
+}
+// Hàm cập nhật tỷ lệ phần trăm
+function updatePercentage(semIdx, courseIdx, selectElement) {
+    if (!data[semIdx] || !data[semIdx].courses[courseIdx]) return;
+    
+    const course = data[semIdx].courses[courseIdx];
+    const selectedOption = percentageOptions[selectElement.selectedIndex];
+    
+    course.w_qt = selectedOption.qt;
+    course.w_ck = selectedOption.ck;
+    
+    saveData();
+    
+    // CẬP NHẬT TẤT CẢ
+    updateCourseDisplay(semIdx, courseIdx);
+    updateSemesterDisplay(semIdx);
+    updateOverallInfo(); // THÊM DÒNG NÀY!
+}
+
+// Hàm cập nhật tên học kỳ
+function updateSemesterName(semIdx, value) {
+    if (data[semIdx]) {
+        data[semIdx].name = value;
+        saveData();
+    }
+}
+
 // Hàm cập nhật thông tin tổng thể
 function updateOverallInfo() {
     const overallGPA = calculateOverallGPA();
@@ -537,6 +549,7 @@ function updateOverallInfo() {
         
         overallGPAElem.className = '';
         const numericGPA = parseFloat(overallGPA.replace(',', '.'));
+        
         if (numericGPA >= 3.6) {
             overallGPAElem.classList.add('gpa-excellent');
         } else if (numericGPA >= 3.2) {
@@ -575,16 +588,27 @@ function cancelDelete(semIdx) {
     }
 }
 
+// Hàm xóa một môn học
+function deleteCourse(semIdx, courseIdx) {
+    if (!data[semIdx] || !data[semIdx].courses[courseIdx]) return;
+    
+    data[semIdx].courses.splice(courseIdx, 1);
+    saveData();
+    render();
+}
+
 // Hàm cập nhật bảng tổng quan
 function updateSummary() {
     let totalCourses = 0;
     let totalCredits = 0;
     
     data.forEach(sem => {
-        totalCourses += sem.courses.length;
-        sem.courses.forEach(c => {
-            totalCredits += validateCredit(c.credit);
-        });
+        if (sem.courses && Array.isArray(sem.courses)) {
+            totalCourses += sem.courses.length;
+            sem.courses.forEach(c => {
+                totalCredits += validateCredit(c.credit);
+            });
+        }
     });
     
     const totalSemestersElem = document.getElementById('total-semesters');
@@ -598,116 +622,7 @@ function updateSummary() {
     updateOverallInfo();
 }
 
-// HÀM MỚI: Tải dữ liệu từ file JSON
-function importDataFromFile(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    
-    if (file.type !== "application/json") {
-        alert("Vui lòng chọn file JSON!");
-        return;
-    }
-    
-    const reader = new FileReader();
-    
-    reader.onload = function(e) {
-        try {
-            const importedData = JSON.parse(e.target.result);
-            
-            // Kiểm tra cấu trúc dữ liệu
-            if (!importedData.gpaData || !Array.isArray(importedData.gpaData)) {
-                alert("File JSON không đúng định dạng!");
-                return;
-            }
-            
-            // Yêu cầu xác nhận nếu đã có dữ liệu
-            if (data.length > 0) {
-                if (!confirm("Thao tác này sẽ thay thế dữ liệu hiện tại. Bạn có chắc không?")) {
-                    return;
-                }
-            }
-            
-            data = importedData.gpaData;
-            
-            // Tính lại điểm tổng kết cho tất cả môn học
-            data.forEach(sem => {
-                sem.courses.forEach(course => {
-                    course.finalScore = calculateFinalScore(course);
-                });
-            });
-            
-            saveData();
-            render();
-            alert("Đã tải dữ liệu thành công!");
-        } catch (error) {
-            alert("Lỗi khi đọc file JSON: " + error.message);
-        }
-    };
-    
-    reader.readAsText(file);
-    
-    // Reset input file
-    event.target.value = '';
-}
-
-// Sửa lại hàm addSampleData để thành import dữ liệu
-function addSampleData() {
-    // Tạo input file ẩn
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = '.json';
-    fileInput.style.display = 'none';
-    fileInput.onchange = importDataFromFile;
-    
-    document.body.appendChild(fileInput);
-    fileInput.click();
-    
-    // Xóa input sau khi chọn
-    setTimeout(() => {
-        document.body.removeChild(fileInput);
-    }, 100);
-}
-
-// Hàm xuất dữ liệu
-function exportData() {
-    const overallGPA = calculateOverallGPA();
-    const overallScore = calculateOverallScore();
-    
-    const exportData = {
-        timestamp: new Date().toISOString(),
-        gpaData: data,
-        overallGPA: overallGPA,
-        overallScore: overallScore
-    };
-    
-    const dataStr = JSON.stringify(exportData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = `gpa-data-${new Date().toISOString().slice(0,10)}.json`;
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-}
-
-// Hàm xóa tất cả dữ liệu
-function clearAllData() {
-    if (confirm("Bạn có chắc chắn muốn xóa tất cả dữ liệu? Thao tác này không thể hoàn tác.")) {
-        data = [];
-        saveData();
-        render();
-    }
-}
-
-// Hàm xóa một môn học
-function deleteCourse(semIdx, courseIdx) {
-    data[semIdx].courses.splice(courseIdx, 1);
-    saveData();
-    render();
-}
-
-// Hàm hiển thị dữ liệu
+// HÀM RENDER QUAN TRỌNG - ĐÃ FIX ĐẦY ĐỦ
 function render() {
     const container = document.getElementById('semesters-container');
     
@@ -775,7 +690,7 @@ function render() {
                     <button class="btn btn-light btn-sm" onclick="cancelDelete(${semIdx})">Hủy</button>
                 </div>
                 
-                ${sem.courses.length > 0 ? `
+                ${sem.courses && sem.courses.length > 0 ? `
                     <table class="courses-table">
                         <thead>
                             <tr>
@@ -808,7 +723,7 @@ function render() {
                                         </td>
                                         <td>
                                             <input class="course-input" id="course-credit-${semIdx}-${courseIdx}" 
-                                                   type="number" min="0" step="1" 
+                                                   type="number" min="1" step="1" max="10"
                                                    value="${Math.round(course.credit)}" 
                                                    oninput="updateValue(${semIdx}, ${courseIdx}, 'credit', this.value)">
                                         </td>
@@ -817,7 +732,7 @@ function render() {
                                                    id="course-qt-${semIdx}-${courseIdx}" 
                                                    value="${formatScoreWithComma(course.qt)}" 
                                                    oninput="handleScoreInput(this, ${semIdx}, ${courseIdx}, 'qt')"
-                                                   onkeydown="handleScoreKeydown(event, this, ${semIdx}, ${courseIdx}, 'qt')"
+                                                   onkeydown="handleScoreKeydown(event, this, ${semIdx}, ${courseIdx}, 'qt')"  onchange="updateOverallInfo()"
                                                    placeholder="0,0">
                                         </td>
                                         <td>
@@ -825,7 +740,7 @@ function render() {
                                                    id="course-ck-${semIdx}-${courseIdx}" 
                                                    value="${formatScoreWithComma(course.ck)}" 
                                                    oninput="handleScoreInput(this, ${semIdx}, ${courseIdx}, 'ck')"
-                                                   onkeydown="handleScoreKeydown(event, this, ${semIdx}, ${courseIdx}, 'ck')"
+                                                   onkeydown="handleScoreKeydown(event, this, ${semIdx}, ${courseIdx}, 'ck')"  onchange="updateOverallInfo()"
                                                    placeholder="0,0">
                                         </td>
                                         <td>
@@ -877,7 +792,7 @@ function render() {
                     </div>
                 `}
                 
-                <div style="text-align: center;">
+                <div style="text-align: center; margin-top: 15px;">
                     <button type="button" class="btn btn-primary" onclick="addCourse(${semIdx})">
                         <span class="btn-icon">+</span> Thêm môn học
                     </button>
@@ -885,6 +800,100 @@ function render() {
             </div>
         `;
     }).join('');
+}
+
+// Thêm các hàm còn lại từ file gốc (giữ nguyên)
+function addSampleData() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.json';
+    fileInput.style.display = 'none';
+    fileInput.onchange = importDataFromFile;
+    
+    document.body.appendChild(fileInput);
+    fileInput.click();
+    
+    setTimeout(() => {
+        document.body.removeChild(fileInput);
+    }, 100);
+}
+
+function importDataFromFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    if (file.type !== "application/json") {
+        alert("Vui lòng chọn file JSON!");
+        return;
+    }
+    
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+            
+            if (!importedData.gpaData || !Array.isArray(importedData.gpaData)) {
+                alert("File JSON không đúng định dạng!");
+                return;
+            }
+            
+            if (data.length > 0) {
+                if (!confirm("Thao tác này sẽ thay thế dữ liệu hiện tại. Bạn có chắc không?")) {
+                    return;
+                }
+            }
+            
+            data = importedData.gpaData;
+            
+            data.forEach(sem => {
+                if (sem.courses) {
+                    sem.courses.forEach(course => {
+                        course.finalScore = calculateFinalScore(course);
+                    });
+                }
+            });
+            
+            saveData();
+            render();
+            alert("Đã tải dữ liệu thành công!");
+        } catch (error) {
+            alert("Lỗi khi đọc file JSON: " + error.message);
+        }
+    };
+    
+    reader.readAsText(file);
+    event.target.value = '';
+}
+
+function exportData() {
+    const overallGPA = calculateOverallGPA();
+    const overallScore = calculateOverallScore();
+    
+    const exportData = {
+        timestamp: new Date().toISOString(),
+        gpaData: data,
+        overallGPA: overallGPA,
+        overallScore: overallScore
+    };
+    
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+    const exportFileDefaultName = `HUIT-GPA-Long-${new Date().toISOString().slice(0,10)}.json`;
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+}
+
+function clearAllData() {
+    if (confirm("Bạn có chắc chắn muốn xóa tất cả dữ liệu? Thao tác này không thể hoàn tác.")) {
+        data = [];
+        saveData();
+        render();
+    }
 }
 
 // Khởi chạy lần đầu
