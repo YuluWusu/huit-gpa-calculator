@@ -180,7 +180,8 @@
     .semester-card {
         padding: 15px;
         margin-bottom: 20px;
-        border-left: 4px solid #4361ee; /* Giữ màu border */
+        border-top: 4px solid #4361ee; /* Giữ màu border */
+        border-left: none;
         background: white; /* Giữ màu nền */
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.08);
