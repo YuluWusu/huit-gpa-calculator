@@ -4,6 +4,57 @@
    MÀN HÌNH RẤT NHỎ (Điện thoại - 360px - 400px)
 ============================================= */
 @media (max-width: 400px) {
+    .courses-table {
+        display: block; /* Quan trọng: Bỏ display:table */
+    }
+    
+    .courses-table tbody {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .courses-table tr {
+        display: flex;
+        flex-direction: column; /* Quan trọng: Dọc */
+    }
+    
+    /* Bước 2: Chọn các TD muốn ở dòng 1 */
+    .courses-table td:nth-child(1),  /* Tên môn học */
+    .courses-table td:nth-child(2),  /* Số tín chỉ */
+    .courses-table td:nth-child(3),  /* Điểm QT */
+    .courses-table td:nth-child(4),  /* Điểm CK */
+    .courses-table td:nth-child(5) { /* Tỷ lệ */
+        display: flex;               /* Quan trọng */
+        flex-direction: column;      /* Label + Input dọc */
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+    }
+    
+    /* Bước 3: Chọn các TD muốn ở dòng 2 */
+    .courses-table td:nth-child(6),  /* Điểm số */
+    .courses-table td:nth-child(7),  /* Điểm chữ */
+    .courses-table td:nth-child(8),  /* GPA */
+    .courses-table td:nth-child(9),  /* Đánh giá */
+    .courses-table td:nth-child(10) { /* Thao tác */
+        display: flex;                /* Quan trọng */
+        flex-direction: row;         /* Label + Value ngang */
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        width: 100%;
+    }
+    
+    /* Bước 4: Thêm label cho từng ô (thay thế header) */
+    .courses-table td:before {
+        content: attr(data-label); /* Quan trọng */
+        font-weight: 600;
+        color: var(--secondary);
+        margin-bottom: 5px;
+        width: 100%;
+        text-align: center;
+    }
     body {
         padding: 8px;
         min-height: 100vh;
@@ -296,9 +347,10 @@
     .course-input {
         padding: 8px 10px;
         font-size: 0.9rem;
+        text-align: center;
         width: auto;
         flex-grow: 1;
-        max-width: 100px;
+        max-width: 230px;
         border: 1px solid #ddd; /* Giữ màu border */
         border-radius: 6px;
         background: white; /* Giữ màu nền */
