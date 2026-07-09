@@ -614,3 +614,115 @@ select.course-input:focus {
     .badges-grid { grid-template-columns: repeat(4, 1fr); }
     .whatif-result { grid-template-columns: 1fr; }
 }
+
+/* ====== HEADER ENHANCEMENTS ====== */
+.header-top {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+.header-logo { width: 64px; flex-shrink: 0; }
+.header-text { text-align: left; }
+.header-text h1 { margin-bottom: 6px; font-size: 2rem; }
+.header-text .subtitle { margin: 0; font-size: 0.95rem; }
+.header-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 4px;
+}
+.feature-chip {
+    background: linear-gradient(135deg, #f0f3ff, #e8d5ff);
+    color: var(--secondary);
+    border: 1px solid #c9b8f5;
+    border-radius: 20px;
+    padding: 5px 13px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* ====== GUIDE PANEL ====== */
+.guide-panel {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    border: 1.5px solid #e8edff;
+    overflow: hidden;
+}
+.guide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 20px;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--secondary);
+    font-size: 0.95rem;
+    transition: background 0.2s;
+    background: linear-gradient(135deg, #f4f6ff, #fdfeff);
+}
+.guide-header:hover { background: #ecf0ff; }
+.guide-body { padding: 16px 20px 20px; }
+.guide-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 16px;
+}
+@media (max-width: 640px) {
+    .guide-grid { grid-template-columns: 1fr; }
+}
+.guide-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #f8f9ff;
+    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid #e8edff;
+}
+.guide-step-num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--secondary);
+    color: white;
+    font-weight: 800;
+    font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+}
+.guide-step-content strong { display: block; margin-bottom: 4px; color: var(--secondary); font-size: 0.88rem; }
+.guide-step-content p { margin: 0; font-size: 0.8rem; color: var(--gray); line-height: 1.5; }
+.guide-step-content em { color: var(--primary); font-style: normal; font-weight: 600; }
+.guide-note {
+    font-size: 0.82rem;
+    color: var(--gray);
+    background: #fffde7;
+    border-left: 3px solid #f8961e;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* ====== SECURITY NOTICE (Import Modal) ====== */
+.security-notice {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+    border: 1.5px solid #a5d6a7;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+}
+.security-icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+.security-text strong { display: block; color: #2e7d32; font-size: 0.88rem; margin-bottom: 4px; }
+.security-text p { margin: 0; font-size: 0.8rem; color: #388e3c; line-height: 1.5; }
+.security-text p strong { display: inline; color: #1b5e20; }
