@@ -1,28 +1,41 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Công cụ tính GPA</title>
+    <title>Công cụ tính GPA HUIT</title>
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Công cụ tính GPA HUIT">
+    <meta property="og:description"
+        content="Theo dõi điểm trung bình học kỳ, tổng thể và biểu đồ xu hướng GPA của bạn. Tự động tải điểm từ hệ thống HUIT.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/huit/gpa/main/140.png">
+    <meta property="og:url" content="https://huit-gpa-calculator.vercel.app/">
+    <meta property="og:type" content="website">
+
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="Logo HUIT-01.ico">
     <link rel="stylesheet" href="responsive.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
     <div class="container">
         <header>
-                <img src="140.png" alt="logo" style="width: 60px;">
-                <h1> Công cụ tính GPA</h1>
+            <img src="140.png" alt="logo" style="width: 60px;">
+            <h1> Công cụ tính GPA</h1>
             <p class="subtitle">Theo dõi điểm trung bình học kỳ và tổng thể.</p>
         </header>
-        
+
         <div class="actions-bar">
             <div class="controls">
                 <button class="btn btn-primary" onclick="addSemester()">
                     <span class="btn-icon">+</span> Thêm học kỳ
                 </button>
-                <button class="btn btn-success" onclick="addSampleData()">
-                    <span class="btn-icon">📊</span> Dữ Liệu Mẫu
+
+
+                <button class="btn btn-primary" style="background-color: #8338ec;" onclick="openImportModal()">
+                    <span class="btn-icon">🔄</span> Tự động tải điểm
                 </button>
                 <button class="btn btn-warning" onclick="exportData()">
                     <span class="btn-icon">📥</span> Xuất dữ liệu
@@ -32,30 +45,30 @@
                 </button>
             </div>
         </div>
-        
+
         <div class="dashboard">
             <div class="semesters-container" id="semesters-container">
                 <!-- Các học kỳ sẽ được hiển thị ở đây -->
             </div>
-            
+
             <div class="summary-card">
                 <h2 class="summary-title">Tổng quan</h2>
-                
+
                 <div class="summary-item">
                     <span class="summary-label">Tổng số học kỳ:</span>
                     <span class="summary-value" id="total-semesters">0</span>
                 </div>
-                
+
                 <div class="summary-item">
                     <span class="summary-label">Tổng số môn học:</span>
                     <span class="summary-value" id="total-courses">0</span>
                 </div>
-                
+
                 <div class="summary-item">
                     <span class="summary-label">Tổng số tín chỉ:</span>
                     <span class="summary-value" id="total-credits">0</span>
                 </div>
-                
+
                 <div class="total-gpa">
                     GPA Tổng thể: <span id="overall-gpa">0.00</span>
                 </div>
@@ -91,13 +104,171 @@
                         </tr>
                     </table>
                 </div>
+
+                <!-- Chart Tabs -->
+                <div class="chart-container" style="margin-top: 25px;">
+                    <div class="chart-tabs">
+                        <button id="tab-trend" class="chart-tab chart-tab-active" onclick="switchChartTab('trend')">📈
+                            Xu hướng GPA</button>
+                        <button id="tab-dist" class="chart-tab" onclick="switchChartTab('dist')">🥧 Phân bổ
+                            điểm</button>
+                    </div>
+                    <div id="chart-trend-wrapper" style="position:relative; height:180px;">
+                        <canvas id="gpaTrendChart"></canvas>
+                    </div>
+                    <div id="chart-dist-wrapper" style="position:relative; height:180px; display:none;">
+                        <canvas id="gradeDistChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Thành tích / Huy hiệu -->
+                <div class="achievements-section" style="margin-top: 20px;">
+                    <h3 style="color: var(--secondary); margin-bottom: 12px;">🏅 Thành tích</h3>
+                    <div id="badges-container" class="badges-grid"></div>
+                </div>
             </div>
         </div>
-        
-        <div class="footer">
-            <p>Công cụ tính GPA &copy; 2026 - Hoàng Xuân Phi Long</p>
+
+        <!-- What-If Panel -->
+        <div id="whatif-panel" class="whatif-panel">
+            <div class="whatif-header" onclick="toggleWhatIf()">
+                <span>🎯 Công cụ GPA Mục tiêu</span>
+                <span id="whatif-toggle-icon">▼</span>
+            </div>
+            <div id="whatif-body" class="whatif-body" style="display:none;">
+                <p class="whatif-desc">Thêm các môn học dự kiến để xem GPA sẽ thay đổi như thế nào.</p>
+                <table class="whatif-table" id="whatif-table">
+                    <thead>
+                        <tr>
+                            <th>Tên môn</th>
+                            <th>Tín chỉ</th>
+                            <th>Điểm dự kiến</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="whatif-rows"></tbody>
+                </table>
+                <div class="whatif-controls">
+                    <button class="btn btn-primary" onclick="addWhatIfRow()"
+                        style="font-size:0.85rem; padding:7px 14px;">+ Thêm môn</button>
+                    <button class="btn btn-danger" onclick="clearWhatIf()"
+                        style="font-size:0.85rem; padding:7px 14px;">🗑 Xóa tất cả</button>
+                </div>
+                <div id="whatif-result" class="whatif-result" style="display:none;">
+                    <div class="whatif-result-item">
+                        <span>GPA hiện tại:</span>
+                        <strong id="wi-current-gpa">—</strong>
+                    </div>
+                    <div class="whatif-result-item">
+                        <span>GPA dự kiến:</span>
+                        <strong id="wi-projected-gpa">—</strong>
+                    </div>
+                    <div class="whatif-result-item">
+                        <span>Thay đổi:</span>
+                        <strong id="wi-delta">—</strong>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="footer">
+            <p>Công cụ tính GPA &copy; 2026 - Hoàng Xuân Phi Long lớp 15DHTH01</p>
+        </div>
+
+        <!-- Modal Welcome -->
+        <div id="welcome-modal" class="modal">
+            <div class="modal-content" style="text-align: center;">
+                <span class="close-modal" onclick="closeWelcomeModal()">&times;</span>
+                <h2 style="color: var(--secondary); margin-bottom: 20px;">Chào mừng bạn đến với Công cụ tính GPA!</h2>
+                <p style="margin-bottom: 25px; color: var(--gray); font-size: 1rem;">
+                    Bạn muốn nhập điểm bằng cách nào?
+                </p>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn btn-light" onclick="closeWelcomeModal()"
+                        style="flex: 1; min-width: 150px; padding: 15px;">
+                        <span class="btn-icon">📝</span> Nhập liệu thủ công
+                    </button>
+                    <button class="btn btn-primary" onclick="switchToImportModal()"
+                        style="flex: 1; min-width: 150px; background-color: #8338ec; padding: 15px;">
+                        <span class="btn-icon">🔄</span> Lấy điểm tự động (HUIT)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Tự động tải điểm -->
+        <div id="import-modal" class="modal">
+            <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+                <span class="close-modal" onclick="closeImportModal()">&times;</span>
+                <h2 style="color: var(--secondary); margin-bottom: 20px;">Tự động lấy điểm HUIT</h2>
+                <p style="margin-bottom: 15px; color: var(--gray); font-size: 0.9rem;">
+                    Vui lòng nhập đầy đủ thông tin để hệ thống có thể tra cứu điểm của bạn.
+                </p>
+
+                <div id="import-error-message"
+                    style="display: none; color: #e74c3c; background-color: #fadbd8; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 0.9rem; text-align: center;">
+                </div>
+
+                <div id="import-form-container">
+                    <div class="form-group">
+                        <label for="import-mssv">Mã số sinh viên (MSSV)</label>
+                        <input type="text" id="import-mssv" class="course-input" placeholder="Ví dụ: 200121... "
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="import-name">Họ và tên</label>
+                        <input type="text" id="import-name" class="course-input" placeholder="Nhập họ và tên..."
+                            required>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="form-group" style="flex: 1;">
+                            <label for="import-dob">Ngày sinh (DD/MM/YYYY)</label>
+                            <input type="text" id="import-dob" class="course-input" placeholder="Ví dụ: 01/01/2003"
+                                required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="import-class">Lớp học</label>
+                            <input type="text" id="import-class" class="course-input" placeholder="Ví dụ: 15DHTH01"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="import-idcard">Số CCCD / CMND</label>
+                        <input type="text" id="import-idcard" class="course-input" placeholder="Nhập CCCD..." required>
+                    </div>
+                    <div class="form-group captcha-group">
+                        <label for="import-captcha">Mã Captcha</label>
+                        <div class="captcha-container">
+                            <input type="text" id="import-captcha" class="course-input" placeholder="Nhập mã Captcha..."
+                                required>
+                            <img id="captcha-img" src="" alt="Captcha Image" onclick="refreshCaptcha()"
+                                title="Bấm để tải lại Captcha">
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="submitImport()" style="width: 100%;"
+                            id="btn-submit-import">
+                            <span class="btn-icon">🔄</span> Tải Dữ Liệu
+                        </button>
+                    </div>
+                </div>
+
+                <div id="import-loading-container" style="display: none; text-align: center; padding: 20px 0;">
+                    <div class="loader" style="margin: 0 auto 15px;"></div>
+                    <p id="import-loading-status" style="font-weight: 500; color: var(--primary);">Đang khởi tạo kết
+                        nối...</p>
+                    <div class="progress-bar-bg"
+                        style="width: 100%; height: 8px; background-color: #eee; border-radius: 4px; margin-top: 15px; overflow: hidden;">
+                        <div id="import-progress-bar"
+                            style="height: 100%; width: 0%; background-color: var(--primary); transition: width 0.3s ease;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <script src="script.js"></script></body>
+    <script src="script.js"></script>
+</body>
 
 </html>
