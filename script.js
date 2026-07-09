@@ -1623,4 +1623,17 @@ function calculateWhatIfGPA() {
     deltaElem.className = delta > 0.005 ? 'delta-positive' : delta < -0.005 ? 'delta-negative' : 'delta-neutral';
 
     result.style.display = 'grid';
-}
+}
+// ============================================================
+// SECTION: GUIDE PANEL TOGGLE
+// ============================================================
+let guideOpen = false;
+
+function toggleGuide() {
+    guideOpen = !guideOpen;
+    const body = document.getElementById('guide-body');
+    const icon = document.getElementById('guide-toggle-icon');
+    if (!body) return;
+    body.style.display = guideOpen ? 'block' : 'none';
+    if (icon) icon.textContent = guideOpen ? '\u25b2' : '\u25bc';
+}
