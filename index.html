@@ -22,9 +22,23 @@
 <body>
     <div class="container">
         <header>
-            <img src="140.png" alt="logo" style="width: 60px;">
-            <h1> Công cụ tính GPA</h1>
-            <p class="subtitle">Theo dõi điểm trung bình học kỳ và tổng thể.</p>
+            <div class="header-top">
+
+                <div class="header-text" style="text-align: center;">
+                    <img src="140.png" alt="Logo HUIT" class="header-logo">
+                    <h1>Công cụ tính GPA</h1>
+                    <p class="subtitle">Theo dõi điểm trung bình học kỳ, toàn khoá và xu hướng tiến bộ của bạn.<br>
+                        Được xây dựng dành riêng cho sinh viên <strong>Trường Đại học Công nghiệp thực phẩm
+                            TP.HCM</strong>.
+                    </p>
+                </div>
+            </div>
+            <div class="header-features">
+                <div class="feature-chip">📊 Biểu đồ xu hướng GPA</div>
+                <div class="feature-chip">🔄 Tự động tải điểm HUIT</div>
+                <div class="feature-chip">🎯 Mô phỏng GPA mục tiêu</div>
+                <div class="feature-chip">🏅 Hệ thống thành tích</div>
+            </div>
         </header>
 
         <div class="actions-bar">
@@ -43,6 +57,53 @@
                 <button class="btn btn-danger" onclick="clearAllData()">
                     <span class="btn-icon">🗑️</span> Xóa tất cả
                 </button>
+            </div>
+        </div>
+
+        <!-- Hướng dẫn sử dụng -->
+        <div id="guide-panel" class="guide-panel">
+            <div class="guide-header" onclick="toggleGuide()">
+                <span>📖 Hướng dẫn sử dụng</span>
+                <span id="guide-toggle-icon">▼</span>
+            </div>
+            <div id="guide-body" class="guide-body" style="display:none;">
+                <div class="guide-grid">
+                    <div class="guide-step">
+                        <div class="guide-step-num">1</div>
+                        <div class="guide-step-content">
+                            <strong>Nhập điểm thủ công</strong>
+                            <p>Bấm <em>"Thêm học kỳ"</em> → thêm môn học → điền điểm Quá trình (QT) và Cuối kỳ (CK). Hệ
+                                thống tự tính GPA theo thang 4.0.</p>
+                        </div>
+                    </div>
+                    <div class="guide-step">
+                        <div class="guide-step-num">2</div>
+                        <div class="guide-step-content">
+                            <strong>Tự động tải điểm từ HUIT</strong>
+                            <p>Bấm <em>"Tự động tải điểm"</em> → điền đầy đủ MSSV, Họ tên, Ngày sinh, Lớp, CCCD và
+                                Captcha → hệ thống tự nhập toàn bộ bảng điểm.</p>
+                        </div>
+                    </div>
+                    <div class="guide-step">
+                        <div class="guide-step-num">3</div>
+                        <div class="guide-step-content">
+                            <strong>Công cụ GPA Mục tiêu</strong>
+                            <p>Mở panel <em>"Công cụ GPA Mục tiêu"</em> ở cuối trang → thêm các môn sắp thi cùng điểm dự
+                                kiến → xem GPA thay đổi ngay lập tức.</p>
+                        </div>
+                    </div>
+                    <div class="guide-step">
+                        <div class="guide-step-num">4</div>
+                        <div class="guide-step-content">
+                            <strong>Xuất &amp; Nhập CSV</strong>
+                            <p>Bấm <em>"Xuất dữ liệu"</em> để lưu file CSV. Để khôi phục: bấm <em>"Thêm học kỳ"</em> rồi
+                                dùng nút nhập CSV ở trong trang. Dữ liệu lưu tự động trong trình duyệt.</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="guide-note">💡 <strong>Lưu ý:</strong> Toàn bộ dữ liệu điểm được lưu <strong>cục bộ trên trình
+                        duyệt của bạn</strong> (localStorage), không gửi lên bất kỳ server nào ngoài việc tra cứu từ hệ
+                    thống HUIT.</p>
             </div>
         </div>
 
@@ -201,9 +262,17 @@
             <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
                 <span class="close-modal" onclick="closeImportModal()">&times;</span>
                 <h2 style="color: var(--secondary); margin-bottom: 20px;">Tự động lấy điểm HUIT</h2>
-                <p style="margin-bottom: 15px; color: var(--gray); font-size: 0.9rem;">
-                    Vui lòng nhập đầy đủ thông tin để hệ thống có thể tra cứu điểm của bạn.
-                </p>
+                <!-- Thông báo bảo mật -->
+                <div class="security-notice">
+                    <span class="security-icon">🔒</span>
+                    <div class="security-text">
+                        <strong>Yêu cầu nhập đầy đủ thông tin xác thực</strong>
+                        <p>Để đảm bảo bảo mật thông tin sinh viên, hệ thống yêu cầu đầy đủ các trường định danh (MSSV,
+                            CCCD, ngày sinh...) — đây là thông tin bắt buộc theo hệ thống tra cứu của HUIT. <strong>Dữ
+                                liệu của bạn chỉ được dùng để xác thực một lần, không được lưu trữ tại bất kỳ
+                                đâu.</strong></p>
+                    </div>
+                </div>
 
                 <div id="import-error-message"
                     style="display: none; color: #e74c3c; background-color: #fadbd8; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 0.9rem; text-align: center;">
